@@ -1,0 +1,121 @@
+// calendar from http://www.codemiles.com/javascript-examples/simple-javascript-calendar-t7767.html
+//not sure why formating is off...
+// https://github.com/PolymerElements/paper-material will need this for other elements
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="bt-cal">
+	<style>
+		#dayNames th {
+			width:100px;
+		}
+		#week{
+			height:80px;
+		}
+		#date{
+			text-align: right;
+  			vertical-align: -webkit-baseline-middle;
+		}
+		table,td{
+			border: 1px solid black;
+		}
+	</style>
+	<template>
+		<table class='calendar'>
+			<tr class='monthNow'>
+				<th colspan='7'>
+					<span>{{month}}</span>
+				</th>
+				</tr>
+				<tr id='dayNames'>  
+					<th>Sun</th>  
+					<th>Mon</th> 
+					<th>Tues</th>
+					<th>Wed</th> 
+					<th>Thurs</th> 
+					<th>Fri</th> 
+					<th>Sat</th> 
+				</tr>
+			<template is="dom-repeat" items="{{calendar}}" as="week">
+				<tr id='week'>
+					<template is="dom-repeat" items="{{week}}" as="i">
+						<td id='date'>{{i.date}}</td>
+					</template>	
+				</tr>
+			</template>
+		</table>
+	</template>
+</dom-module>
+
+<script>
+	Polymer({
+		is:'bt-cal',
+		date: new Date(),
+		ready: function(){
+			this.calendar = buildCalendar();
+			this.month = getMonth(this.date);
+		},
+
+	});
+	function getMonth(date){
+		var months = ["January","February","March","April","May","June","July","August","September","October","November", "December"];
+		return months[date.getMonth()];
+	}
+	function buildCalendar(date){
+		var date = date || new Date(); //if date is passed use otherwise use today's date.
+
+		//Get the array of dates. "1-getFirstDay()" will give negative numbers for the weeks leading up to the first day of the month (starting on the monday before the month starts).
+		return recurseWeeks(1-getFirstDay(date), getDaysInMonth(date))
+
+		//Recursive function that builds the month array week by week
+		function recurseWeeks(firstDate, monthEnd, monthArr){
+			var monthArr = monthArr || new Array;
+			if (firstDate<=monthEnd){
+				monthArr.push(getWeekArray(firstDate,monthEnd));
+				recurseWeeks(firstDate+7, monthEnd, monthArr);
+			}
+			return monthArr;
+		}
+
+		// builds a array for the week starting on the first day of the week. monthEnd is used to fill the end of the month.
+		function getWeekArray(firstDate, monthEnd){
+			var weekArr = new Array;
+			var count = 0;
+			while (count < 7){
+				if(firstDate>0 && firstDate<=monthEnd) weekArr.push({date:firstDate});
+				else weekArr.push({date:""});
+				count++;
+				firstDate++;
+			}
+			return weekArr;
+		}
+
+		//helper function to find the day of the week to start the month
+		function getFirstDay(date){
+			return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+		}
+
+		//helper function that return the number of days in a given month
+		function getDaysInMonth(date) {
+			switch(date.getMonth()){
+				case 0: return 31;break; //Jan
+				case 1:
+					if ( (date.getYear()%100!=0) && (date.getYear()%4==0) || (date.getYear()%400==0)){
+					  return 29;break;
+					}else{
+					  return 28;break;
+					} //Feb
+				case 2: return 31;break; //March
+				case 3: return 30;break; //April
+				case 4: return 31;break; //May
+				case 5: return 30;break; //June
+				case 6: return 31;break; //July
+				case 7: return 31;break; //Aug
+				case 8: return 30;break; //Sep
+				case 9: return 31;break; //Oct
+				case 10: return 30;break; //Nov
+				case 11: return 31;break; //Dec
+			}
+		}
+	}
+</script>

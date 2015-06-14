@@ -1,0 +1,20 @@
+{
+  "name": "bt-cal",
+  "version": "0.0.0",
+  "authors": [
+    "Tyler Beatty <tbeatty.sk@gmail.com>"
+  ],
+  "description": "Web component calendar for interactive dates.",
+  "main": "demo.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies":{
+    "polymer": "polymer/polymer#^1.0"
+  }
+}
