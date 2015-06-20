@@ -14,7 +14,8 @@
     "test",
     "tests"
   ],
-  "dependencies":{
-    "polymer": "polymer/polymer#^1.0"
+  "dependencies": {
+    "polymer": "polymer/polymer#^1.0",
+    "bt-cal-date": "https://github.com/tbeattysk/bt-cal-date.git"
   }
 }
